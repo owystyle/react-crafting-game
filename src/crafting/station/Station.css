@@ -1,0 +1,18 @@
+.Station {
+  background-color: #fff;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  margin: 10px;
+  user-select: none;
+}
+
+.Station-progress {
+  position: absolute;
+  height: 100%;
+  background-color: #e2e7e4;
+}
+
+.Station-info {
+  position: relative;
+  padding: 20px;
+}

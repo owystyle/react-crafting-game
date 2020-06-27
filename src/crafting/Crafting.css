@@ -1,0 +1,17 @@
+.Crafting {
+}
+
+.Crafting-room {
+  display: flex;
+}
+
+.Crafting-ingredients {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #e2e7e4;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
