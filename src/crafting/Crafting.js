@@ -6,7 +6,11 @@ import stationsData from "../data/stations";
 import "./Crafting.css";
 
 function Crafting(props) {
-  const { inventory, addToInventory, removeFromInventory } = useInventory();
+  const [inventory, addToInventory, removeFromInventory] = useInventory([
+    { value: "wood", quantity: 10 },
+    { value: "stone", quantity: 10 },
+    { value: "iron", quantity: 10 },
+  ]);
 
   return (
     <div className="Crafting">
@@ -15,7 +19,7 @@ function Crafting(props) {
           <Station
             key={item.name}
             {...item}
-            onStart={(...args) => removeFromInventory(...args)}
+            onDropIngredient={(...args) => removeFromInventory(...args)}
             onFinish={(...args) => addToInventory(...args)}
           />
         ))}

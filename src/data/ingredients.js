@@ -44,12 +44,10 @@ export default [
     },
     recipe: {
       quantity: 10,
-      ingredients: [
-        {
-          name: "wood",
-          quantity: 1,
-        },
-      ],
+      duration: 2000,
+      ingredients: {
+        wood: 1,
+      },
     },
   },
   {
@@ -60,12 +58,10 @@ export default [
     },
     recipe: {
       quantity: 1,
-      ingredients: [
-        {
-          name: "stone",
-          quantity: 10,
-        },
-      ],
+      duration: 4000,
+      ingredients: {
+        stone: 2,
+      },
     },
   },
   {
@@ -76,12 +72,11 @@ export default [
     },
     recipe: {
       quantity: 10,
-      ingredients: [
-        {
-          name: "wood",
-          quantity: 1,
-        },
-      ],
+      duration: 2000,
+      ingredients: {
+        wood: 1,
+        // stone: 1,
+      },
     },
   },
   {
@@ -92,12 +87,10 @@ export default [
     },
     recipe: {
       quantity: 10,
-      ingredients: [
-        {
-          name: "iron",
-          quantity: 1,
-        },
-      ],
+      duration: 2000,
+      ingredients: {
+        iron: 1,
+      },
     },
   },
 ];

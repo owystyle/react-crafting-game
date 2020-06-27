@@ -6,6 +6,10 @@
   user-select: none;
 }
 
+.Station.is-over {
+  outline: 2px solid red;
+}
+
 .Station-progress {
   position: absolute;
   height: 100%;

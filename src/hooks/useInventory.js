@@ -1,11 +1,7 @@
 import { useState } from "react";
 
-function useInventory() {
-  const [inventory, setInventory] = useState([
-    { value: "wood", quantity: 10 },
-    { value: "stone", quantity: 10 },
-    { value: "iron", quantity: 10 },
-  ]);
+function useInventory(defaultState = []) {
+  const [inventory, setInventory] = useState(defaultState);
 
   const addToInventory = (name, quantity) => {
     setInventory((inv) => {
@@ -23,19 +19,23 @@ function useInventory() {
     });
   };
 
-  const removeFromInventory = (name, quantity) => {
-    setInventory((inv) => {
-      const inventoryAfter = inv.map((item) => {
-        return item.value === name
-          ? { ...item, quantity: item.quantity - quantity }
-          : item;
-      });
+  const removeFromInventory = (items) => {
+    Object.keys(items).forEach((name, idx) => {
+      const quantity = Object.values(items)[idx];
 
-      return inventoryAfter.filter((item) => item.quantity !== 0);
+      setInventory((inv) => {
+        const inventoryAfter = inv.map((item) => {
+          return item.value === name
+            ? { ...item, quantity: item.quantity - quantity }
+            : item;
+        });
+
+        return inventoryAfter.filter((item) => item.quantity !== 0);
+      });
     });
   };
 
-  return { inventory, addToInventory, removeFromInventory };
+  return [inventory, addToInventory, removeFromInventory];
 }
 
 export default useInventory;

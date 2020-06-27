@@ -1,41 +1,24 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import useInventory from "../../hooks/useInventory";
 import useProgress from "../../hooks/useProgress";
-import ingredientsData from "../../data/ingredients";
+import { findRecipe } from "./helpers";
 
 function useStation(props) {
-  const { input, output, onStart, onFinish } = props;
+  const { input, output, onDropIngredient, onFinish } = props;
   const [progress, startProgress] = useProgress();
-  const [queue, setQueue] = useState([]);
+  const [storage, addToStorage, removeFromStorage] = useInventory();
 
-  const craftItem = (ingredient) => {
-    if (!output) return;
+  useEffect(() => {
+    if (storage.length > 0 && !progress) {
+      const { name, recipe } = findRecipe(output, storage);
+      if (!name) return;
 
-    console.log("Craft with", ingredient);
-    console.log("Recipes", output);
-    console.log("Begin output ....");
-
-    let finalRecipe = null;
-
-    output.forEach((recipeName) => {
-      const ingredientToDo = ingredientsData.find(
-        (item) => item.name === recipeName
-      );
-
-      const ingredientFound = ingredientToDo.recipe.ingredients.find(
-        (item) => item.name === ingredient
-      );
-
-      //! Daca 2 retete au ingredientul, vor fi scoase 2 iteme
-      if (ingredientFound) {
-        finalRecipe = ingredientToDo.name;
-        onFinish(finalRecipe, ingredientToDo.recipe.quantity);
-      }
-    });
-
-    setQueue([]);
-    console.log("End output ....");
-    console.log(finalRecipe, "crafted");
-  };
+      startProgress(recipe.duration, () => {
+        onFinish(name, recipe.quantity);
+        removeFromStorage(recipe.ingredients);
+      });
+    }
+  }, [storage]);
 
   const onDragOver = (e) => {
     e.preventDefault();
@@ -44,14 +27,12 @@ function useStation(props) {
   const onDrop = (e) => {
     const ingredient = e.dataTransfer.getData("ingredient");
     if (!input.includes(ingredient)) return;
-    if (progress) return;
 
-    setQueue([...queue, { value: ingredient, quantity: 1 }]);
-    onStart(ingredient, 1);
-    startProgress(() => craftItem(ingredient));
+    onDropIngredient({ [ingredient]: 1 });
+    addToStorage(ingredient, 1);
   };
 
-  return { progress, queue, onDragOver, onDrop };
+  return { progress, storage, onDragOver, onDrop };
 }
 
 export default useStation;
