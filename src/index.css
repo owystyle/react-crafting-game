@@ -1,3 +1,7 @@
+:root {
+  --primary-color: #fc5438;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -10,9 +14,13 @@ body,
   padding: 0;
 }
 
+html {
+  font-size: 10px;
+}
+
 body {
   font-family: "Roboto", sans-serif;
-  font-size: 18px;
+  font-size: 1.8vh;
   background-color: #ecefed;
 }
 

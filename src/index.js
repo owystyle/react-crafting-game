@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./normalize.css";
 import "./index.css";
+import "./animations.css";
 
 import Game from "./Game";
 

@@ -3,6 +3,9 @@
 
 .Crafting-room {
   display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
 }
 
 .Crafting-ingredients {
@@ -11,7 +14,13 @@
   left: 0;
   width: 100%;
   background-color: #e2e7e4;
-  padding: 20px;
+  padding: 2vh;
   display: flex;
   justify-content: center;
+  flex-flow: row nowrap;
+}
+
+.Crafting-ingredients > div {
+  flex: 0 0 8vh;
+  margin: 0.4vh;
 }

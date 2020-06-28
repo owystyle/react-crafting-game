@@ -1,32 +1,51 @@
 import React from "react";
 import useStation from "./useStation";
+import Inventory from "../inventory/Inventory";
 import "./Station.css";
 
 function Station(props) {
-  const { name } = props;
-  const { progress, storage, onDragOver, onDrop, isAllowed } = useStation(
-    props
-  );
+  const { title } = props;
+  const {
+    progress,
+    storage,
+    onDragOver,
+    onDrop,
+    isAllowed,
+    status,
+  } = useStation(props);
 
   return (
     <div
-      className={`Station ${isAllowed && "is-over"}`}
+      className={`Station ${isAllowed && "is-over"} ${
+        progress && "is-running"
+      }`}
+      // style={{ backgroundImage: `url(${icon})` }}
       onDragOver={onDragOver}
       onDrop={onDrop}
     >
-      {progress && (
-        <div className="Station-progress" style={{ width: `${progress}%` }} />
-      )}
-
       <div className="Station-info">
-        <h2>{name}</h2>
-        {storage.map((item, idx) => (
-          <p key={idx}>
-            {item.value} x {item.quantity}
-          </p>
-        ))}
+        <h2>{title}</h2>
 
-        {storage.length <= 0 && <p>Empty</p>}
+        <div className="Station-inventory">
+          <Inventory slots={[1, 1]} value={storage.input} />
+          <Inventory slots={[1, 1]} value={storage.output} />
+        </div>
+      </div>
+
+      <div className="Station-progress">
+        <div className="Station-feedback">
+          <span className="material-icons">settings</span>
+        </div>
+        <div className="Station-progressbar">
+          {progress && (
+            <div
+              className="Station-progressbar-value"
+              style={{ width: `${progress}%` }}
+            ></div>
+          )}
+
+          {!progress && <span>{status}</span>}
+        </div>
       </div>
     </div>
   );

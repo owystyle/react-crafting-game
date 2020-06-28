@@ -1,22 +1,70 @@
 .Station {
+  width: 18vh;
   background-color: #fff;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
   position: relative;
-  margin: 10px;
+  margin: 1vh;
   user-select: none;
+  background-position: right bottom;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* border-bottom: 0.2vh solid var(--primary-color); */
+  border-radius: 1vh 3vh 1vh 1vh;
 }
 
-.Station.is-over {
-  outline: 2px solid red;
-}
-
-.Station-progress {
-  position: absolute;
-  height: 100%;
-  background-color: #e2e7e4;
+.Station.is-running {
+  animation: shakeLow 0.2s cubic-bezier(0.895, 0.03, 0.935, 0.095) infinite;
 }
 
 .Station-info {
   position: relative;
-  padding: 20px;
+  padding: 0 2vh;
+  text-align: left;
+}
+
+.Station-inventory {
+  display: flex;
+  justify-content: space-between;
+}
+
+.Station-progress {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 2vh;
+}
+
+.Station-feedback {
+  padding-right: 1vh;
+}
+
+.Station-feedback span {
+  display: block;
+  font-size: 1.8vh;
+  color: #ccc;
+}
+
+.Station.is-running .Station-feedback span {
+  animation: spin 1s infinite linear;
+  color: var(--primary-color);
+}
+
+.Station-progressbar {
+  flex: 1;
+  text-align: left;
+}
+
+.Station-progressbar-value {
+  background-color: var(--primary-color);
+  height: 0.2vh;
+}
+
+.Station-progressbar span {
+  font-size: 1.1vh;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--primary-color);
+  letter-spacing: 0.3vh;
+  animation: blink 1s infinite;
+  line-height: 1;
 }

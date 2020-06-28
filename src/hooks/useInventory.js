@@ -1,41 +1,57 @@
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 
 function useInventory(defaultState = []) {
-  const [inventory, setInventory] = useState(defaultState);
+  const [storage, setStorage] = useState(defaultState);
 
-  const addToInventory = (name, quantity) => {
-    setInventory((inv) => {
-      const inventoryAfter = inv.map((item) => {
-        return item.value === name
-          ? { ...item, quantity: item.quantity + quantity }
-          : item;
-      });
-
-      const itemFound = inventoryAfter.find((item) => item.value === name);
-
-      return itemFound
-        ? inventoryAfter
-        : [...inventoryAfter, { value: name, quantity }];
-    });
-  };
-
-  const removeFromInventory = (items) => {
-    Object.keys(items).forEach((name, idx) => {
-      const quantity = Object.values(items)[idx];
-
-      setInventory((inv) => {
-        const inventoryAfter = inv.map((item) => {
+  const addToStorage = useCallback(
+    (name, quantity) => {
+      setStorage((lastStorage) => {
+        const storageAfter = lastStorage.map((item) => {
           return item.value === name
-            ? { ...item, quantity: item.quantity - quantity }
+            ? { ...item, quantity: item.quantity + quantity }
             : item;
         });
 
-        return inventoryAfter.filter((item) => item.quantity !== 0);
-      });
-    });
-  };
+        const itemFound = storageAfter.find((item) => item.value === name);
 
-  return [inventory, addToInventory, removeFromInventory];
+        return itemFound
+          ? storageAfter
+          : [...storageAfter, { value: name, quantity }];
+      });
+    },
+    [setStorage]
+  );
+
+  const removeFromStorage = useCallback(
+    (items) => {
+      Object.keys(items).forEach((name, idx) => {
+        const quantity = Object.values(items)[idx];
+
+        setStorage((lastStorage) => {
+          const storageAfter = lastStorage.map((item) => {
+            return item.value === name
+              ? { ...item, quantity: item.quantity - quantity }
+              : item;
+          });
+
+          return storageAfter.filter((item) => item.quantity !== 0);
+        });
+      });
+    },
+    [setStorage]
+  );
+
+  const catAddToStorage = useCallback(
+    (value, quantity) => {
+      const valueExists = storage.find((itm) => itm.value === value);
+      const storageFull = storage.length === 1;
+
+      return valueExists ? true : !storageFull;
+    },
+    [storage]
+  );
+
+  return [storage, addToStorage, removeFromStorage, catAddToStorage];
 }
 
 export default useInventory;

@@ -12,6 +12,17 @@ function Crafting(props) {
     { value: "iron", quantity: 10 },
   ]);
 
+  const onDrop = (e) => {
+    const ingredient = e.dataTransfer.getData("ingredient");
+    const quantity = +e.dataTransfer.getData("quantity");
+    const location = e.dataTransfer.getData("location");
+
+    if (!ingredient) return;
+    if (!quantity) return;
+
+    addToInventory(ingredient, quantity);
+  };
+
   return (
     <div className="Crafting">
       <div className="Crafting-room">
@@ -28,9 +39,12 @@ function Crafting(props) {
       <div
         className="Crafting-ingredients"
         onDragOver={(e) => e.preventDefault()}
+        onDrop={onDrop}
       >
         {inventory.map((item, idx) => (
-          <Ingredient key={idx} {...item} />
+          <div key={idx}>
+            <Ingredient {...item} location="warehouse" />
+          </div>
         ))}
       </div>
     </div>
