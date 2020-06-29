@@ -1,11 +1,14 @@
 import iconStone from "../assets/miningIcons_05_t.png";
-import iconWood from "../assets/miningIcons_18_t.png";
+import iconWood from "../assets/wd_t_03.png";
 import iconIron from "../assets/miningIcons_10_t.png";
 import iconGem from "../assets/miningIcons_90_t.png";
-import iconWoodStick from "../assets/miningIcons_45_t.png";
+import iconWoodStick from "../assets/wd_t_01.png";
 import iconStoneBlock from "../assets/miningIcons_80_t.png";
 import iconCoal from "../assets/miningIcons_97_t.png";
-import iconIronStick from "../assets/miningIcons_41_t.png";
+import iconIronStick from "../assets/bracers_3.PNG";
+import iconGoldOre from "../assets/ore-gold.png";
+import iconGoldBar from "../assets/bar-gold.png";
+import iconGoldRing from "../assets/rings_1.PNG";
 
 export default [
   {
@@ -86,10 +89,45 @@ export default [
       title: "Iron Stick",
     },
     recipe: {
-      quantity: 10,
+      quantity: 1,
       duration: 2000,
       ingredients: {
         iron: 1,
+      },
+    },
+  },
+  {
+    name: "gold-ore",
+    icon: iconGoldOre,
+    info: {
+      title: "Gold Ore",
+    },
+  },
+  {
+    name: "gold-bar",
+    icon: iconGoldBar,
+    info: {
+      title: "Gold Ore",
+    },
+    recipe: {
+      quantity: 1,
+      duration: 2000,
+      ingredients: {
+        "gold-ore": 1,
+      },
+    },
+  },
+  {
+    name: "gold-ring",
+    icon: iconGoldRing,
+    info: {
+      title: "Gold Ring",
+    },
+    recipe: {
+      quantity: 1,
+      duration: 10000,
+      ingredients: {
+        "gold-bar": 1,
       },
     },
   },

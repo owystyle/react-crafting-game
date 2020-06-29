@@ -1,52 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Station from "./station/Station";
+import Warehouse from "./warehouse/Warehouse";
 import Ingredient from "./ingredient/Ingredient";
-import useInventory from "../hooks/useInventory";
 import stationsData from "../data/stations";
+import useGame from "../store/useGame";
 import "./Crafting.css";
 
-function Crafting(props) {
-  const [inventory, addToInventory, removeFromInventory] = useInventory([
-    { value: "wood", quantity: 10 },
-    { value: "stone", quantity: 10 },
-    { value: "iron", quantity: 10 },
-  ]);
+function Crafting() {
+  const [store] = useGame();
 
-  const onDrop = (e) => {
-    const ingredient = e.dataTransfer.getData("ingredient");
-    const quantity = +e.dataTransfer.getData("quantity");
-    const location = e.dataTransfer.getData("location");
-
-    if (!ingredient) return;
-    if (!quantity) return;
-
-    addToInventory(ingredient, quantity);
-  };
+  useEffect(() => {
+    console.log("store", store);
+  }, [store]);
 
   return (
     <div className="Crafting">
       <div className="Crafting-room">
         {stationsData.map((item) => (
-          <Station
-            key={item.name}
-            {...item}
-            onDropIngredient={(...args) => removeFromInventory(...args)}
-            onFinish={(...args) => addToInventory(...args)}
-          />
+          <Station key={item.name} {...item} />
         ))}
       </div>
 
-      <div
-        className="Crafting-ingredients"
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={onDrop}
-      >
-        {inventory.map((item, idx) => (
-          <div key={idx}>
-            <Ingredient {...item} location="warehouse" />
+      <Warehouse>
+        {store.warehouseAll.map((item) => (
+          <div key={item}>
+            <Ingredient
+              value={item}
+              quantity={store.warehouse[item]}
+              location="warehouse"
+            />
           </div>
         ))}
-      </div>
+      </Warehouse>
     </div>
   );
 }

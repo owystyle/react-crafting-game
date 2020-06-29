@@ -3,17 +3,26 @@ import Ingredient from "../ingredient/Ingredient";
 import "./Inventory.css";
 
 function Inventory(props) {
-  const { slots, value } = props;
+  const { slots, value, location, disableDrag, small, icon } = props;
   const cols = Array(slots[0]).join(".").split(".");
   const rows = Array(slots[1]).join(".").split(".");
 
   return (
-    <div className="Inventory">
+    <div className={`Inventory ${small && "is-small"}`}>
       {cols.map((col, colIdx) => (
         <div key={colIdx} className="Inventory-row">
           {rows.map((row, rowIdx) => (
             <div key={`${colIdx}-${rowIdx}`} className="Inventory-slot">
-              {value && value[rowIdx] && <Ingredient {...value[rowIdx]} />}
+              {value && Object.keys(value)[rowIdx] && (
+                <Ingredient
+                  disableDrag={disableDrag}
+                  value={Object.keys(value)[rowIdx]}
+                  quantity={Object.values(value)[rowIdx]}
+                  location={location}
+                />
+              )}
+
+              {icon && <span className="Inventory-icon">{icon}</span>}
             </div>
           ))}
         </div>

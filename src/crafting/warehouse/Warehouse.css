@@ -1,0 +1,16 @@
+.Warehouse {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #e2e7e4;
+  padding: 2vh;
+  display: flex;
+  justify-content: center;
+  flex-flow: row nowrap;
+}
+
+.Warehouse > div {
+  flex: 0 0 8vh;
+  margin: 0.4vh;
+}

@@ -7,6 +7,9 @@
 .Ingredient:active {
   cursor: grabbing;
 }
+.Ingredient.is-disabled {
+  cursor: default;
+}
 
 .Ingredient-content {
   position: absolute;
@@ -20,6 +23,10 @@
   user-select: none;
 }
 
+.Ingredient.is-disabled .Ingredient-content {
+  opacity: 1;
+}
+
 .Ingredient-quantity {
   position: absolute;
   right: 0;
@@ -28,6 +35,10 @@
   color: #fff;
   font-size: 1.4vh;
   padding: 0.2vh 0.4vh;
+}
+
+.Ingredient.is-disabled .Ingredient-quantity {
+  opacity: 1;
 }
 
 @keyframes appear {

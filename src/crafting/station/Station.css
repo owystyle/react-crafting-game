@@ -1,9 +1,9 @@
 .Station {
-  width: 18vh;
+  width: 24vh;
   background-color: #fff;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
   position: relative;
-  margin: 1vh;
+  margin: 2vh;
   user-select: none;
   background-position: right bottom;
   background-size: cover;
@@ -12,7 +12,7 @@
   border-radius: 1vh 3vh 1vh 1vh;
 }
 
-.Station.is-running {
+.Station.is-running .Station-slot-running {
   animation: shakeLow 0.2s cubic-bezier(0.895, 0.03, 0.935, 0.095) infinite;
 }
 
@@ -22,8 +22,13 @@
   text-align: left;
 }
 
+.Station-info h2 {
+  color: #e2e7e4;
+}
+
 .Station-inventory {
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -32,6 +37,7 @@
   display: flex;
   align-items: center;
   padding: 2vh;
+  height: 6vh;
 }
 
 .Station-feedback {
@@ -54,9 +60,15 @@
   text-align: left;
 }
 
+.Station-progressbar-inner {
+  /* border: 0.1vh solid var(--primary-color);
+  border-radius: 0.4vh; */
+}
+
 .Station-progressbar-value {
   background-color: var(--primary-color);
   height: 0.2vh;
+  border-radius: 0.4vh;
 }
 
 .Station-progressbar span {
@@ -67,4 +79,33 @@
   letter-spacing: 0.3vh;
   animation: blink 1s infinite;
   line-height: 1;
+}
+
+.Station-bottom {
+  position: absolute;
+  bottom: -0.8vh;
+  left: 1vh;
+  right: 1vh;
+  height: 15vh;
+  background-color: #e2e7e4;
+  z-index: -1;
+  border-radius: 1vh;
+
+  /* position: absolute;
+  bottom: 1.5vh;
+  left: -0.8vh;
+  right: 1vh;
+  height: 17vh;
+  background-color: #e2e7e4;
+  z-index: -1;
+  border-radius: 1vh; */
+
+  /* position: absolute;
+  bottom: -1.5vh;
+  left: -0.5vh;
+  right: -0.5vh;
+  height: 22vh;
+  background-color: #e2e7e4;
+  z-index: -1;
+  border-radius: 1.4vh 3.4vh 1.4vh 1.4vh; */
 }

@@ -1,7 +1,13 @@
 import ingredientsData from "../../data/ingredients";
 
-export function findRecipe(output, storage) {
+export function findRecipe(output, storageObj) {
   let finalRecipe = {};
+  const storage = Object.keys(storageObj).reduce((acc, item, idx) => {
+    return acc.concat({
+      value: item,
+      quantity: Object.values(storageObj)[idx],
+    });
+  }, []);
 
   output.forEach((recipeName) => {
     // Trage toate informatiile despre reteta curenta
@@ -25,7 +31,7 @@ export function findRecipe(output, storage) {
       return acc;
     }, false);
 
-    console.log("test", canBeCrafted);
+    // console.log("test", canBeCrafted);
 
     // Daca exista o reteta, scoate-o din loop
     // asignand-o lui finalRecipe

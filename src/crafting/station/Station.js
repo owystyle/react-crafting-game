@@ -4,15 +4,10 @@ import Inventory from "../inventory/Inventory";
 import "./Station.css";
 
 function Station(props) {
-  const { title } = props;
-  const {
-    progress,
-    storage,
-    onDragOver,
-    onDrop,
-    isAllowed,
-    status,
-  } = useStation(props);
+  const { name, title, color } = props;
+  const { progress, store, onDragOver, onDrop, isAllowed, status } = useStation(
+    props
+  );
 
   return (
     <div
@@ -24,29 +19,57 @@ function Station(props) {
       onDrop={onDrop}
     >
       <div className="Station-info">
-        <h2>{title}</h2>
+        <h2 style={{ color }}>{title}</h2>
 
         <div className="Station-inventory">
-          <Inventory slots={[1, 1]} value={storage.input} />
-          <Inventory slots={[1, 1]} value={storage.output} />
+          <Inventory
+            slots={[1, 1]}
+            value={store[`${name}-input`]}
+            location={`${name}-input`}
+            icon={<span className="material-icons">system_update_alt</span>}
+          />
+          <div className="Station-slot-running">
+            <Inventory
+              disableDrag
+              slots={[1, 1]}
+              value={store[`${name}-running`]}
+              location={`${name}-running`}
+              icon={<span className="material-icons">settings</span>}
+            />
+          </div>
+          <Inventory
+            slots={[1, 1]}
+            value={store[`${name}-output`]}
+            location={`${name}-output`}
+            icon={<span className="material-icons">present_to_all</span>}
+          />
         </div>
       </div>
 
       <div className="Station-progress">
         <div className="Station-feedback">
-          <span className="material-icons">settings</span>
+          <span className="material-icons" style={{ color }}>
+            settings
+          </span>
         </div>
         <div className="Station-progressbar">
           {progress && (
             <div
-              className="Station-progressbar-value"
-              style={{ width: `${progress}%` }}
-            ></div>
+              className="Station-progressbar-inner"
+              style={{ borderColor: color }}
+            >
+              <div
+                className="Station-progressbar-value"
+                style={{ width: `${progress}%`, backgroundColor: color }}
+              ></div>
+            </div>
           )}
 
-          {!progress && <span>{status}</span>}
+          {!progress && <span style={{ color }}>{status}</span>}
         </div>
       </div>
+
+      <div className="Station-bottom" style={{ backgroundColor: color }} />
     </div>
   );
 }

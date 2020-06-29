@@ -1,43 +1,72 @@
-import { useEffect, useState } from "react";
-import useInventory from "../../hooks/useInventory";
+import { useEffect, useState, useCallback } from "react";
+import useGame from "../../store/useGame";
 import useProgress from "../../hooks/useProgress";
 import { findRecipe } from "./helpers";
 
 function useStation(props) {
-  const { input, output, onDropIngredient, onFinish } = props;
+  const { name: stationName, input, output } = props;
+  const [store, dispatch] = useGame();
   const [status, setStatus] = useState("standby");
   const [progress, startProgress] = useProgress();
-  const [
-    storageInput,
-    addToStorageInput,
-    removeFromStorageInput,
-    catAddToStorageInput,
-  ] = useInventory();
-  const [
-    storageOutput,
-    addToStorageOutput,
-    removeFromStorageOutput,
-    catAddToStorageOutput,
-  ] = useInventory();
+
+  const storageExists = useCallback(
+    (name) => {
+      const storageInputName = `${stationName}-${name}`;
+      if (!store[storageInputName]) return;
+
+      return Object.keys(store[storageInputName]).length > 0;
+    },
+    [store, stationName]
+  );
 
   useEffect(() => {
-    if (storageInput.length > 0 && !progress) {
-      const { name, recipe } = findRecipe(output, storageInput);
-      if (!name) return;
+    if (!storageExists("input")) return;
+    if (progress) return;
 
-      if (!catAddToStorageOutput(name, recipe.quantity)) {
-        setStatus("output full");
-        return;
-      }
+    const { name, recipe } = findRecipe(output, store[`${stationName}-input`]);
 
-      startProgress(recipe.duration, () => {
-        // onFinish(name, recipe.quantity);
-        addToStorageOutput(name, recipe.quantity);
-        removeFromStorageInput(recipe.ingredients);
-        setStatus("standby");
+    if (!name) return;
+
+    // if (!catAddToStorageOutput(name, recipe.quantity)) {
+    //   setStatus("output full");
+    //   return;
+    // }
+
+    dispatch({
+      type: "remove-from-storage",
+      location: `${stationName}-input`,
+      payload: recipe.ingredients,
+    });
+    dispatch({
+      type: "add-to-storage",
+      location: `${stationName}-running`,
+      payload: recipe.ingredients,
+    });
+
+    const callback = () => {
+      dispatch({
+        type: "add-to-storage",
+        location: `${stationName}-output`,
+        payload: { [name]: recipe.quantity },
       });
-    }
-  }, [storageInput]);
+      dispatch({
+        type: "remove-from-storage",
+        location: `${stationName}-running`,
+        payload: recipe.ingredients,
+      });
+      setStatus("standby");
+    };
+
+    startProgress(recipe.duration, callback);
+  }, [
+    store,
+    dispatch,
+    output,
+    progress,
+    startProgress,
+    stationName,
+    storageExists,
+  ]);
 
   const onDragOver = (e) => {
     e.preventDefault();
@@ -50,21 +79,24 @@ function useStation(props) {
     if (location !== "warehouse") return;
     if (!input.includes(ingredient)) return;
 
-    if (!catAddToStorageInput(ingredient, 1)) {
-      setStatus("input full");
-      return;
-    }
+    // if (!catAddToStorageInput(ingredient, 1)) {
+    //   setStatus("input full");
+    //   return;
+    // }
 
-    onDropIngredient({ [ingredient]: 1 });
-    addToStorageInput(ingredient, 1);
+    dispatch({
+      type: "remove-from-storage",
+      location: "warehouse",
+      payload: { [ingredient]: 1 },
+    });
+    dispatch({
+      type: "add-to-storage",
+      location: `${stationName}-input`,
+      payload: { [ingredient]: 1 },
+    });
   };
 
-  const storage = {
-    input: storageInput,
-    output: storageOutput,
-  };
-
-  return { progress, storage, onDragOver, onDrop, status };
+  return { progress, store, onDragOver, onDrop, status };
 }
 
 export default useStation;

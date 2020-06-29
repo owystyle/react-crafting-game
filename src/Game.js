@@ -1,12 +1,15 @@
 import React from "react";
+import { GameProvider } from "./store/useGame";
 import Crafting from "./crafting/Crafting";
 import "./Game.css";
 
 function Game() {
   return (
-    <div className="Game">
-      <Crafting />
-    </div>
+    <GameProvider>
+      <div className="Game">
+        <Crafting />
+      </div>
+    </GameProvider>
   );
 }
 
